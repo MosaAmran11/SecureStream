@@ -57,6 +57,14 @@ The repository also contains Jupyter notebooks for creating models and analyzing
 
 ## Contributors
 
+- [Mosa Alawadhi](https://github.com/MosaAmran11)
+- [Faris Badaj](https://github.com/FarisBadaj)
+- [Abdulhadi Al-Ahdal](https://github.com/AbdulhadiAlahdal)
+- Nader Anam
+- Luqman AL-Shaabi
+
+**Forked from:**
+
 - [Anas Dorbani](https://github.com/dorbanianas)
 
 If you have any further questions or need additional information, feel free to ask!
