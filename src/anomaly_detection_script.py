@@ -17,9 +17,12 @@ checkpoint_file_path = 'traffic_data/last_processed_checkpoint.ckpt'
 anomaly_history_file = 'traffic_data/anomaly_history.csv'
 
 # Load the trained model
-model = joblib.load('models/rf_classifier.pkl')  # Change 'your_trained_model.pkl' to the path of your trained model file
+# Change 'your_trained_model.pkl' to the path of your trained model file
+model = joblib.load('models/rf_classifier.pkl')
 
 # Function to read the last processed position or timestamp from the checkpoint file
+
+
 def read_checkpoint():
     if os.path.exists(checkpoint_file_path):
         with open(checkpoint_file_path, 'r') as f:
@@ -31,26 +34,36 @@ def read_checkpoint():
         return 0  # Start from the beginning of the file if checkpoint file doesn't exist
 
 # Function to write the last processed position or timestamp to the checkpoint file
+
+
 def write_checkpoint(position):
     with open(checkpoint_file_path, 'w') as f:
         f.write(str(position))
 
 # Function to write anomalies to the anomaly history CSV file
+
+
 def write_anomalies_to_csv(anomalies):
     if not os.path.exists(anomaly_history_file):
         with open(anomaly_history_file, 'w') as f:
-            f.write("Index,Anomaly,Timestamp\n")  # Write header if file doesn't exist
+            # Write header if file doesn't exist
+            f.write("Index,Anomaly,Timestamp\n")
     df = pd.DataFrame(anomalies)
-    df.to_csv(anomaly_history_file, mode='a', index=False, header=False)  # Append to file without writing header again
+    # Append to file without writing header again
+    df.to_csv(anomaly_history_file, mode='a', index=False, header=False)
 
 # Define function to preprocess data and make predictions
+
+
 def predict_anomalies(new_data):
     # Preprocess the new data
-    df = new_data.drop(columns=['dst_port', 'protocol', 'timestamp', 'src_ip', 'dst_ip', 'src_port', 'cwr_flag_count']).sort_index(axis=1)
+    df = new_data.drop(columns=['destination_port', 'protocol', 'timestamp',
+                       'source_ip', 'destination_ip', 'source_port', 'cwr_flag_count']).sort_index(axis=1)
 
     # Make predictions on the new data
-    predictions = model.predict(df)  # Assuming 'label' is the target column and is not included in the features
-    
+    # Assuming 'label' is the target column and is not included in the features
+    predictions = model.predict(df)
+
     # Initialize list to store anomalies
     anomalies = []
 
@@ -58,23 +71,26 @@ def predict_anomalies(new_data):
         if prediction != 0:
             anomaly_info = {
                 "anomaly": prediction,
-                "timestamp": new_data.loc[i, 'timestamp']  # Assuming timestamp column exists
+                # Assuming timestamp column exists
+                "timestamp": new_data.loc[i, 'timestamp']
             }
             anomalies.append(anomaly_info)
-            print(f"🔴 Anomaly detected: {prediction} at {anomaly_info['timestamp']}")
+            print(
+                f"🔴 Anomaly detected: {prediction} at {anomaly_info['timestamp']}")
     if not anomalies:
         print("🟢 No anomalies detected")
 
     return anomalies
 
+
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if event.src_path == traffic_file_path:
             print("File modified. Detecting anomalies...")
-            
+
             # Read the last processed position from the checkpoint file
             last_processed_position = read_checkpoint()
-            
+
             # Read the new data from the traffic file, starting from the last processed position
             with open(traffic_file_path, 'r') as f:
                 header = f.readline().strip('\n').split(',')
@@ -93,7 +109,7 @@ class MyHandler(FileSystemEventHandler):
 
                 # Retrieve the current file position
                 current_position = f.tell()
-            
+
             # Trigger prediction function
             try:
                 anomalies = predict_anomalies(new_data)
@@ -101,7 +117,7 @@ class MyHandler(FileSystemEventHandler):
                     write_anomalies_to_csv(anomalies)
             except Exception as e:
                 pass
-            
+
             # Update the last processed position in the checkpoint file
             write_checkpoint(current_position)
 
