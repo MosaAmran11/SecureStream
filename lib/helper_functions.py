@@ -25,7 +25,8 @@ def optimize_and_clean_df(df):
     # convert columns to correct data types
     df[df.columns.difference(['Destination Port', 'Protocol', 'Timestamp', 'Label'])] = df[df.columns.difference(
         ['Destination Port', 'Protocol', 'Timestamp', 'Label'])].apply(pd.to_numeric, errors='coerce')
-    df['Timestamp'] = pd.to_datetime(df.Timestamp, format="%d/%m/%Y %H:%M:%S")
+    df['Timestamp'] = pd.to_datetime(
+        df.Timestamp, dayfirst=True, format="mixed")
 
     # reduce memory allocation of dataframe with function
     df, NAlist = reduce_mem_usage(df)
