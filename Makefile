@@ -8,6 +8,12 @@ venv:
 	python3 -m venv $(VENV_NAME)
 	@echo "Python virtual environment $(VENV_NAME) created successfully."
 
+# Activate the virtual environment
+activate:
+	@echo "Activating virtual environment..."
+	@source $(VENV_NAME)/bin/activate
+	@echo "Virtual environment activated."
+
 # Install required libraries from requirements.txt
 install:
 	@echo "Installing required libraries from $(REQUIREMENTS_FILE)..."
@@ -15,7 +21,7 @@ install:
 	@echo "Required libraries installed successfully."
 
 # Shortcut target for setting up the project
-setup: venv install
+setup: venv activate install
 	@echo "Project setup completed successfully."
 
 # Run the anomaly detection script

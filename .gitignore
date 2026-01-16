@@ -1,6 +1,7 @@
 data/*
 __pycache__/
+*vscode/
 models/*
-venv/
+*venv/
 traffic_data/*
 *.code-workspace

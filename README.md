@@ -11,21 +11,22 @@ To set up the project environment, follow these steps:
 1. Clone this repository to your local machine.
 2. Navigate to the project directory.
 
-```bash
-cd securestream
-```
+   ```bash
+   cd securestream
+   ```
 
-3. Create a Python virtual environment.
+3. Create & activate a Python virtual environment.
 
-```bash
-make venv
-```
+   ```bash
+   make venv
+   make activate
+   ```
 
 4. Install the required libraries from the `requirements.txt` file.
 
-```bash
-make install
-```
+   ```bash
+   make install
+   ```
 
 ### Run Anomaly Detection
 
