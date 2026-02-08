@@ -1,4 +1,5 @@
 from cicflowmeter.sniffer import create_sniffer
+import logging
 import sys
 import os
 
@@ -6,6 +7,17 @@ import os
 sys.path.append(os.path.abspath('../'))
 INPUT_INTERFACE = 'Wi-Fi'  # Change this to your network interface name
 OUTPUT_FILE = os.path.join('traffic_data', 'flows.csv')
+LOG_FILE = os.path.join('traffic_data', 'cicflowmeter_output.log')
+
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=logging.DEBUG, # Equivalent to -v (verbose)
+    format='%(asctime)s | %(levelname)s | %(message)s',
+    filemode='w' # Overwrite mode (use 'a' to append)
+)
+
+print(f"Starting CICFlowMeter on {INPUT_INTERFACE}...")
+
 
 sniffer, session = create_sniffer(
     input_file=None,
