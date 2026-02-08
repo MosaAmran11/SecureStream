@@ -10,15 +10,15 @@ import sys
 sys.path.append(os.path.abspath('../'))
 
 # Define the path to the traffic file
-traffic_file_path = 'traffic_data/flows.csv'
+traffic_file_path = os.path.join('traffic_data', 'flows.csv')
 # Define the path to the file where the last processed position or timestamp is stored
-checkpoint_file_path = 'traffic_data/last_processed_checkpoint.ckpt'
+checkpoint_file_path = os.path.join('traffic_data', 'last_processed_checkpoint.ckpt')
 # Define the path to the anomaly history file
-anomaly_history_file = 'traffic_data/anomaly_history.csv'
+anomaly_history_file = os.path.join('traffic_data', 'anomaly_history.csv')
 
 # Load the trained model
 # Change 'your_trained_model.pkl' to the path of your trained model file
-model = joblib.load('models/rf_classifier.pkl')
+model = joblib.load(os.path.join('models', 'rf_classifier.pkl'))
 
 # Function to read the last processed position or timestamp from the checkpoint file
 
